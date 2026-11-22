@@ -1,0 +1,16 @@
+{
+  "name": "brand-pipeline",
+  "owner": {
+    "name": "Abhimanyu Dhull"
+  },
+  "metadata": {
+    "description": "Brand identity pipeline for Next.js in the AREA house style."
+  },
+  "plugins": [
+    {
+      "name": "brand-pipeline",
+      "source": "./",
+      "description": "Brand identity pipeline in the AREA house style, with an AREA-style /brand kit page."
+    }
+  ]
+}

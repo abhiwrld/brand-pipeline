@@ -1,0 +1,231 @@
+/* Brand Identity case study, laid out like an AREA project page (brand-pipeline skill template).
+   72px unit, a drafting grid of rounded cells, one centered column of artboards,
+   a 72px caption row under each, crop marks on hover. Always light, like a print proof. */
+
+body:has(.ak) { background: #fff; }
+
+.ak {
+  --unit: 72px;
+  --pad: 36px;
+  --paper: #ffffff; --ink: #0e0f12; --ink-2: #5b6170; --slate: #8696a4;
+  --rule: #e8eaef; --rule-strong: #c9cdd6; --tint: #f4f5f8; --hair: #d1d5db;
+  /* Brand: set the accent and fonts. Fonts fall back to the site's next/font variables. */
+  --accent: #2b44ff;
+  --ak-mono: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  --ak-text: var(--font-text, ui-sans-serif, system-ui, sans-serif);
+  --ak-label: 10.5px; --ak-label-lh: 16px;
+  color-scheme: light;
+  min-height: 100dvh; background: #fff; color: var(--ink);
+}
+/* Optional P3 accent: @supports (color: color(display-p3 0 0 0)) { .ak { --accent: color(display-p3 …); } } */
+
+/* The label: the only UI type size. */
+.ak-hdr, .ak-meta, .ak-more, .ak-cap, .ak-sect, .ak-foot, .ak-l {
+  font: 400 var(--ak-label) / var(--ak-label-lh) var(--ak-mono); letter-spacing: 0.04em; text-transform: uppercase;
+}
+
+/* Header: three 72px slots over the page, content scrolls beneath. */
+.ak-hdr {
+  position: fixed; z-index: 30; top: 16px; left: 50%; translate: -50% 0;
+  width: min(576px, calc(100vw - 32px)); height: 72px;
+  display: flex; align-items: center; justify-content: space-between; pointer-events: none;
+}
+.ak-hdr > * { pointer-events: auto; }
+.ak-slot { display: grid; place-items: center; width: 72px; height: 72px; padding: 0; border: 0; background: none; color: var(--ink); }
+.ak-slot svg { display: block; }
+.ak-word { color: var(--ink); display: flex; }
+.ak-word svg { display: block; }
+.ak-glyph { opacity: 0; transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+.ak-glyph.is-on { opacity: 1; }
+.ak-glyph line { stroke: var(--accent); }
+.ak-glyph rect { fill: none; stroke: var(--accent); stroke-width: 1.5; }
+.ak-slot:focus-visible { outline: 1px solid var(--accent); outline-offset: -4px; }
+
+/* Column + drafting grid */
+.ak-col {
+  position: relative; width: 1440px; max-width: 100%; margin: 0 auto; padding-top: 96px;
+  container-type: inline-size; overflow-x: clip;
+}
+.ak-gridbg {
+  --bg: #fff; --grid: rgb(229 231 235); --sp: 12px; --spc: 36px;
+  position: absolute; inset: 96px 0 0; pointer-events: none;
+  background-image:
+    repeating-radial-gradient(circle at 0% 0%, var(--bg), var(--bg) var(--sp), transparent var(--sp), transparent 100%),
+    repeating-radial-gradient(circle at 0% 100%, var(--bg), var(--bg) var(--sp), transparent var(--sp), transparent 100%),
+    repeating-radial-gradient(circle at 100% 100%, var(--bg), var(--bg) var(--sp), transparent var(--sp), transparent 100%),
+    repeating-radial-gradient(circle at 100% 0%, var(--bg), var(--bg) var(--sp), transparent var(--sp), transparent 100%),
+    repeating-linear-gradient(to right, var(--grid) 0 1px, transparent 1px var(--unit)),
+    repeating-linear-gradient(to bottom, var(--grid) 0 1px, transparent 1px var(--unit)),
+    repeating-radial-gradient(circle at 50% 50%, var(--bg), var(--bg) var(--spc), transparent var(--spc), transparent 100%),
+    repeating-linear-gradient(to right, transparent 0 calc(var(--unit) / 2), var(--grid) calc(var(--unit) / 2) calc(var(--unit) / 2 + 1px), transparent calc(var(--unit) / 2 + 1px) var(--unit)),
+    repeating-linear-gradient(to bottom, transparent 0 calc(var(--unit) / 2), var(--grid) calc(var(--unit) / 2) calc(var(--unit) / 2 + 1px), transparent calc(var(--unit) / 2 + 1px) var(--unit));
+  background-size: var(--unit) var(--unit);
+  background-position: var(--unit) 0;
+}
+.ak-list { position: relative; display: flex; flex-direction: column; align-items: center; gap: var(--unit); padding: var(--unit) var(--pad); }
+
+/* Meta block: 576 × 144 — name / discipline / date, a rule, the ⊕ toggle. */
+.ak-meta {
+  position: relative; width: min(576px, 100%); height: 144px; display: grid; grid-template-rows: 72px 1px 71px;
+  background: #fff; box-shadow: 0 0 0 1px #fff;
+}
+.ak-meta::after { content: ""; grid-row: 2; background: #000; }
+.ak-meta-top { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.ak-meta-top h1, .ak-meta-top p { margin: 0; font: inherit; line-height: 19px; }
+.ak-more { grid-row: 3; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; background: none; color: inherit; }
+.ak-more i { position: relative; width: 12px; height: 12px; border-radius: 50%; background: #000; flex: none; }
+.ak-more i::before, .ak-more i::after { content: ""; position: absolute; left: 50%; top: 50%; width: 6px; height: 1px; background: #fff; translate: -50% -50%; }
+.ak-more i::after { rotate: 90deg; transition: opacity 150ms; }
+.ak-more i.is-open::after { opacity: 0; }
+.ak-blurb {
+  width: min(576px, 100%); margin-top: calc(var(--unit) * -1 + 1px); padding: 36px 72px 44px; background: #fff;
+  box-shadow: 0 0 0 6px #fff; text-align: center; font: 400 14px / 20px var(--ak-text);
+}
+.ak-blurb p { margin: 0 0 16px; }
+.ak-blurb p:last-child { margin: 0; }
+
+/* Section header: 576 × 144 */
+.ak-sect {
+  width: min(576px, 100%); height: 144px; display: grid; grid-template-rows: 1fr 1px 1fr; text-align: center;
+  background: #fff; box-shadow: 0 0 0 1px #fff;
+}
+.ak-sect::before { content: ""; grid-row: 2; background: #000; }
+.ak-sect h2 { grid-row: 1; align-self: end; margin: 0 0 8px; font: inherit; }
+.ak-sect p { grid-row: 3; align-self: start; margin: 10px 0 0; color: var(--slate); }
+
+/* Artboards. --w/--h are the artboard size in px; --s scales them to the column. */
+.ak-frame {
+  --avail: calc(tan(atan2(100cqw, 1px)) - 2 * tan(atan2(var(--pad), 1px)));
+  --s: min(1, calc(var(--avail) / var(--w)));
+  position: relative; margin: 0; width: calc(var(--w) * var(--s) * 1px); display: flex; flex-direction: column;
+}
+.ak-img {
+  position: relative; height: calc(var(--h) * var(--s) * 1px); overflow: hidden;
+  background: #fff; box-shadow: 0 0 0 6px #fff;
+}
+.ak-stage {
+  position: absolute; left: 50%; top: 50%; display: grid; place-items: center;
+  transform: translate(-50%, -50%) scale(var(--s)); color: var(--ink);
+}
+.ak-stage svg { display: block; }
+.tone-ink { background: #0e0f12; }
+.tone-ink .ak-stage, .tone-ink .lockup { color: #fff; }
+.tone-accent { background: var(--accent); }
+.tone-accent .ak-stage, .tone-accent .lockup { color: #fff; }
+.tone-tint { background: var(--tint); }
+
+.ak-cap { position: relative; height: 72px; display: flex; align-items: center; justify-content: center; padding: 0 12px; background: #fff; text-align: center; }
+.ak-cap::before { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 1px; background: var(--hair); transition: background 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+.ak-cap span { position: relative; z-index: 1; padding: 4px 8px; background: #fff; }
+.ak-cap .num { color: var(--accent); }
+.ak-frame:hover .ak-cap::before { background: #000; }
+
+/* Crop marks: four 72px L-corners just outside the artboard, notched 5px. */
+.ak-crop { position: absolute; z-index: 10; width: 72px; height: 72px; opacity: 0; pointer-events: none; transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+.ak-hover:hover .ak-crop { opacity: 1; }
+.ak-crop.tl { top: -71px; left: -71px; border-bottom: 1px solid #000; border-right: 1px solid #000; clip-path: polygon(0 0, 0 100%, calc(100% - 5px) 100%, calc(100% - 5px) calc(100% - 5px), 100% calc(100% - 5px), 100% 0); }
+.ak-crop.tr { top: -71px; right: -72px; border-bottom: 1px solid #000; border-left: 1px solid #000; clip-path: polygon(100% 0, 100% 100%, 5px 100%, 5px calc(100% - 5px), 0 calc(100% - 5px), 0 0); }
+.ak-crop.bl { bottom: 0; left: -71px; border-top: 1px solid #000; border-right: 1px solid #000; clip-path: polygon(0 100%, 0 0, calc(100% - 5px) 0, calc(100% - 5px) 5px, 100% 5px, 100% 100%); }
+.ak-crop.br { bottom: 0; right: -72px; border-top: 1px solid #000; border-left: 1px solid #000; clip-path: polygon(100% 100%, 100% 0, 5px 0, 5px 5px, 0 5px, 0 100%); }
+.ak-crop.bl.out, .ak-crop.br.out { bottom: -72px; }
+@media (hover: none), (max-width: 760px) { .ak-crop { display: none; } }
+
+/* Grid view: a 3-up contact sheet, no captions. */
+.ak-list.is-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: start; justify-items: center; }
+.ak-list.is-grid .ak-meta, .ak-list.is-grid .ak-blurb { grid-column: 1 / -1; margin-bottom: 48px; }
+.ak-list.is-grid .ak-blurb { margin-top: -71px; }
+.ak-list.is-grid .ak-sect, .ak-list.is-grid .ak-cap, .ak-list.is-grid .ak-crop { display: none; }
+.ak-list.is-grid .ak-frame {
+  --cell: calc((var(--avail) - 48) / 3);
+  --s: min(calc(var(--cell) / var(--w)), calc(var(--cell) / var(--h)));
+  width: calc(var(--cell) * 1px);
+}
+.ak-list.is-grid .ak-img { height: calc(var(--cell) * 1px); }
+
+.ak-foot { position: relative; padding: 0 0 72px; text-align: center; }
+
+/* ───────── artwork helpers ───────── */
+.ak-row { display: flex; align-items: center; justify-content: center; }
+.ak-bottom { align-items: flex-end; }
+.ak-col-item { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.ak-l.m, .ak-stage .m { color: var(--ink-2); }
+
+.ak-draw .g { stroke: var(--rule-strong); stroke-width: 0.15; }
+.ak-draw .g2 { stroke: var(--rule-strong); stroke-width: 1; }
+.ak-draw .d { stroke: var(--accent); stroke-width: 0.25; }
+.ak-draw .n { stroke: var(--accent); stroke-width: 0.5; }
+.ak-draw text { font: 400 4.5px var(--ak-mono); letter-spacing: 0.04em; text-transform: uppercase; fill: var(--ink-2); }
+/* Small-viewBox construction drawings: add class "fine" (or set your own size). */
+.ak-draw.fine text { font-size: 2.6px; }
+.ak-draw .t { font-size: 15px; fill: var(--ink-2); }
+.ak-draw .t.s { font-size: 12px; }
+.ak-draw .t.w { fill: #fff; }
+
+.ak-swatch { display: flex; flex-direction: column; gap: 2px; width: 240px; }
+.ak-swatch .chip { height: 300px; margin-bottom: 14px; box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08); }
+.ak-swatch.sm { width: 156px; }
+.ak-swatch.sm .chip { height: 120px; box-shadow: none; border-right: 1px solid rgb(0 0 0 / 0.04); }
+.ak-swatch.sm:last-child .chip { box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.1); }
+.ak-step { display: grid; place-items: center; width: 144px; height: 96px; font: 400 14px var(--ak-mono); }
+
+.ak-type { display: flex; align-items: center; gap: 64px; width: 864px; }
+.ak-type .aa { font: 500 300px / 0.8 var(--ak-text); letter-spacing: -0.04em; }
+.ak-type .body { display: flex; flex-direction: column; gap: 18px; }
+.ak-type .big { font: 500 48px / 1.02 var(--ak-text); letter-spacing: -0.032em; }
+.ak-type .abc { font: 400 17px / 26px var(--ak-text); color: var(--ink-2); }
+.ak-type.mono .big-mono { font: 400 150px / 1 var(--ak-mono); letter-spacing: -0.06em; }
+.ak-type.mono .body { gap: 12px; }
+.ak-type .digits { font: 400 34px / 1 var(--ak-mono); letter-spacing: -0.04em; color: var(--ink-2); margin-top: 10px; }
+
+.ak-card {
+  width: 504px; height: 288px; padding: 28px; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start;
+  background: #fff; color: #0e0f12; box-shadow: 0 1px 2px rgb(0 0 0 / 0.08), 0 24px 48px -20px rgb(0 0 0 / 0.28);
+}
+.ak-card .lockup { color: #0e0f12; }
+.ak-card-foot { display: flex; flex-direction: column; }
+.ak-card.ink { background: #0e0f12; color: #fff; }
+.ak-card.ink .m { color: #9aa0ad; }
+
+.ak-poster {
+  width: 600px; height: 800px; padding: 36px; display: flex; flex-direction: column; gap: 24px;
+  background: #fff; color: #0e0f12; box-shadow: 0 1px 2px rgb(0 0 0 / 0.08), 0 32px 64px -24px rgb(0 0 0 / 0.3);
+}
+.ak-poster svg { width: 100%; height: auto; }
+.ak-poster-grid {
+  flex: 1; border-block: 2px solid #0e0f12;
+  background:
+    linear-gradient(var(--accent), var(--accent)) 66.6% 0 / 3px 100% no-repeat,
+    repeating-linear-gradient(to right, #e3e5eb 0 1px, transparent 1px calc(100% / 12));
+}
+.ak-poster .copy { font: 500 52px / 1.02 var(--ak-text); letter-spacing: -0.032em; }
+
+.ak-tabs { display: flex; align-items: flex-end; gap: 2px; width: 720px; padding: 10px 10px 0; background: #e4e7ec; border-radius: 12px 12px 0 0; }
+.ak-tab { display: flex; align-items: center; gap: 10px; width: 260px; padding: 11px 14px; border-radius: 10px 10px 0 0; font: 400 14px var(--ak-text); color: #5b6170; }
+.ak-tab.on { background: #fff; color: #0e0f12; }
+.ak-tab span:nth-child(2) { flex: 1; }
+.ak-tab .x { color: #9aa0ad; }
+.ak-tab .dot { width: 16px; height: 16px; border-radius: 4px; background: #c9cdd6; }
+
+@media (max-width: 760px) {
+  .ak { --pad: 16px; }
+  .ak-list { gap: 36px; padding-block: 36px; }
+  .ak-cap { height: 56px; }
+  .ak-blurb { padding: 28px 24px 32px; margin-top: -35px; }
+  .ak-list.is-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .ak-list.is-grid .ak-frame { --cell: calc((var(--avail) - 12) / 2); }
+}
+
+/* Lockups. Move these to globals.css once the site header uses them. */
+.lockup { display: inline-flex; align-items: center; color: var(--ink); }
+.lockup svg { display: block; flex: none; }
+.lockup-labs { font-family: var(--ak-mono, var(--font-mono, monospace)); text-transform: uppercase; letter-spacing: 0.18em; }
+.lockup-center { flex-direction: column; }
+.lockup-stack { flex-direction: column; align-items: flex-start; justify-content: space-between; }
+.lockup-micro { gap: 8px; }
+.lockup-micro .label { font: 400 10.5px / 16px var(--ak-mono, var(--font-mono, monospace)); text-transform: uppercase; letter-spacing: 0.04em; }
+
+/* Exploration board (Section 0): four options, then deleted after the pick. */
+.ak-explore { display: grid; grid-template-columns: repeat(4, 1fr); width: 1296px; height: 100%; }
+.ak-explore-cell { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; padding: 36px 24px; text-align: center; }
+.ak-explore-cell + .ak-explore-cell { border-left: 1px solid var(--rule); }
+.ak-explore-big { display: grid; place-items: center; }

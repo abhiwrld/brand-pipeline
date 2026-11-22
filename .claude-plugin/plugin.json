@@ -1,0 +1,17 @@
+{
+  "name": "brand-pipeline",
+  "version": "1.0.0",
+  "description": "Build a complete brand identity for a Next.js site in the AREA house style: concept, tokens, wordmark and mark (four options to pick from), an AREA-style /brand case-study kit, site redesign and a written spec.",
+  "author": {
+    "name": "Abhimanyu Dhull"
+  },
+  "keywords": [
+    "brand",
+    "identity",
+    "logo",
+    "design-system",
+    "nextjs"
+  ],
+  "license": "MIT",
+  "repository": "https://github.com/abhiwrld/brand-pipeline"
+}

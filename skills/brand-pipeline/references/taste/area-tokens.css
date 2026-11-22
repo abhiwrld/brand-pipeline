@@ -1,0 +1,76 @@
+/* AREA-derived design tokens — measured from area.tech (2026-11-20).
+   Reference material for the redesign; see design-kb/area.md for the reasoning. */
+
+@property --grid-spacer        { syntax: "<length>"; inherits: true; initial-value: 12px; }
+@property --grid-spacer-center { syntax: "<length>"; inherits: true; initial-value: 36px; }
+@property --unit               { syntax: "<length>"; inherits: true; initial-value: 72px; }
+
+:root {
+  /* Grid */
+  --unit: 72px;                 /* everything snaps to this; 1440 = 20u */
+  --unit-half: 36px;
+  --container: 1440px;
+
+  /* Chrome colors (UI never uses saturated color) */
+  --bg: #ffffff;
+  --text: #000000;
+  --ink: #262a2c;
+  --slate: #8696a4;             /* secondary text */
+  --slate-mark: #a1b3c3;        /* home wordmark + desktop icons */
+  --grid-color: rgb(229 231 235);
+  --hairline: oklch(87.2% 0.01 258.338);
+
+  /* Type: one size for all UI */
+  --font: ui-sans-serif, system-ui, sans-serif;
+  --label-size: 11px;
+  --label-leading: 15px;
+  --label-weight: 500;
+  --label-tracking: 0.025em;
+  --body-size: 14px;            /* only inside disclosure panels */
+  --body-leading: 20px;
+
+  /* Motion */
+  --t-fast: 150ms;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.label {
+  font: var(--label-weight) var(--label-size) / var(--label-leading) var(--font);
+  text-transform: uppercase;
+  letter-spacing: var(--label-tracking);
+}
+
+/* Drafting-grid background: rounded cells with center ticks on a --unit tile. */
+.area-grid {
+  --bg-color: var(--bg);
+  --grid-spacer: 12px;
+  --grid-spacer-center: 36px;
+  background-image:
+    repeating-radial-gradient(circle at 0% 0%,     var(--bg-color), var(--bg-color) var(--grid-spacer), transparent var(--grid-spacer), transparent 100%),
+    repeating-radial-gradient(circle at 0% 100%,   var(--bg-color), var(--bg-color) var(--grid-spacer), transparent var(--grid-spacer), transparent 100%),
+    repeating-radial-gradient(circle at 100% 100%, var(--bg-color), var(--bg-color) var(--grid-spacer), transparent var(--grid-spacer), transparent 100%),
+    repeating-radial-gradient(circle at 100% 0%,   var(--bg-color), var(--bg-color) var(--grid-spacer), transparent var(--grid-spacer), transparent 100%),
+    repeating-linear-gradient(to right,  var(--grid-color) 0 1px, transparent 1px var(--unit)),
+    repeating-linear-gradient(to bottom, var(--grid-color) 0 1px, transparent 1px var(--unit)),
+    repeating-radial-gradient(circle at 50% 50%, var(--bg-color), var(--bg-color) var(--grid-spacer-center), transparent var(--grid-spacer-center), transparent 100%),
+    repeating-linear-gradient(to right,  transparent 0 calc(var(--unit) / 2), var(--grid-color) calc(var(--unit) / 2) calc(var(--unit) / 2 + 1px), transparent calc(var(--unit) / 2 + 1px) var(--unit)),
+    repeating-linear-gradient(to bottom, transparent 0 calc(var(--unit) / 2), var(--grid-color) calc(var(--unit) / 2) calc(var(--unit) / 2 + 1px), transparent calc(var(--unit) / 2 + 1px) var(--unit));
+  background-size: var(--unit) var(--unit);
+  background-position: var(--unit) 0;
+  transition: --grid-spacer var(--t-fast) linear, --grid-spacer-center var(--t-fast) linear;
+}
+
+/* Artifact frame: white knockout on the grid, 72px caption row, hover crop marks. */
+.frame        { position: relative; background: var(--bg); box-shadow: 0 0 0 6px var(--bg); }
+.frame-cap    { position: relative; height: var(--unit); display: grid; place-items: center; background: var(--bg); }
+.frame-cap::before { content: ""; position: absolute; inset: 0 auto 0 50%; width: 1px; background: var(--hairline); transition: background var(--t-fast); }
+.frame:hover + .frame-cap::before, .frame-group:hover .frame-cap::before { background: var(--text); }
+.crop { position: absolute; width: var(--unit); height: var(--unit); opacity: 0; pointer-events: none; transition: opacity var(--t-fast); }
+.frame-group:hover .crop { opacity: 1; }
+.crop.tl { top: calc(-1 * var(--unit) + 1px); left: calc(-1 * var(--unit) + 1px); border-right: 1px solid #000; border-bottom: 1px solid #000;
+           clip-path: polygon(0 0, 0 100%, calc(100% - 5px) 100%, calc(100% - 5px) calc(100% - 5px), 100% calc(100% - 5px), 100% 0); }
+/* tr / bl / br mirror tl — see design-ref/area/uniswap/page.html for exact polygons. */
+
+/* Hover caret (dock-style) */
+.caret { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 8px solid #000; opacity: 0; transition: opacity var(--t-fast); }
+.has-caret:hover .caret { opacity: 1; }
